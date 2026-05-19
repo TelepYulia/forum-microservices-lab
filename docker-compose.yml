@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  user-service-16:
+    build: ./user-service
+    container_name: user-service-16
+    ports:
+      - "8016:8016"
+    environment:
+      - STUDENT_N=16
+      - PORT=8016
+
+  forum-service-16:
+    build: ./forum-service
+    container_name: forum-service-16
+    ports:
+      - "9016:9016"
+    environment:
+      - STUDENT_N=16
+      - PORT=9016
