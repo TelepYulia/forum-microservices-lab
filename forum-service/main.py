@@ -1,21 +1,9 @@
-import os
 import json
 from fastapi import FastAPI, Request, Response
 
+app = FastAPI()
+
 STUDENT_N = 16
-
-PORT = int(os.getenv("PORT", 9016))
-
-app = FastAPI(title=f"Forum Service (Student {STUDENT_N})")
-
-START_ID = 100 * STUDENT_N
-topic_id_counter = START_ID
-
-
-db_topics = {
-    topic_id_counter: {"id": topic_id_counter, "title": "Перші кроки в Docker", "content": "Як налаштувати контейнери?", "status": "active"}
-}
-
 
 @app.middleware("http")
 async def add_student_id_metadata(request: Request, call_next):
@@ -57,27 +45,9 @@ async def add_student_id_metadata(request: Request, call_next):
         media_type=content_type
     )
 
-
-@app.post("/api/v1/posts/topics")
-async def create_topic(title: str, content: str):
-    global topic_id_counter
-    topic_id_counter += 1
-    new_topic = {"id": topic_id_counter, "title": title, "content": content, "status": "active"}
-    db_topics[topic_id_counter] = new_topic
-    return new_topic
-
-@app.patch("/api/v1/posts/topics/{id}/status")
-async def moderate_topic(id: int, status: str):
-    if id in db_topics:
-        db_topics[id]["status"] = status
-        return db_topics[id]
-    return {"error": "Topic not found"}
-
 @app.get("/api/v1/posts/topics/search")
 async def search_topics(query: str):
-    results = [topic for topic in db_topics.values() if query.lower() in topic["title"].lower()]
-    return results
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=PORT, reload=True)
+    return {
+        "message": f"Search results for topic: {query}",
+        "topics": ["Docker Basics", "Advanced Kubernetes", "Microservices Architecture"]
+    }
