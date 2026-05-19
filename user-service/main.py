@@ -39,9 +39,6 @@ async def add_student_id_metadata(request: Request, call_next):
             
     return response
 
-@app.get("/api/v1/posts/topics/search")
-async def search_topics(query: str):
-    return {
-        "message": f"Search results for topic: {query}",
-        "topics": ["Docker Basics", "Advanced Kubernetes", "Microservices Architecture"]
-    }
+@app.post("/api/v1/users/register")
+async def register_user(username: str):
+    return {"message": "User registered successfully", "username": username}
