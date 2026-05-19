@@ -18,7 +18,7 @@ jobs:
         run: docker compose up -d --build
 
       - name: Wait for containers to boot up
-        run: sleep 35
+        run: sleep 50
 
       - name: Show Container Logs (🔍 CHECK FOR PY ERRORS HERE)
         run: docker compose logs
