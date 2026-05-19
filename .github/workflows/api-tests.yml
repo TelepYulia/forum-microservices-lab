@@ -11,7 +11,7 @@ jobs:
         run: docker compose up -d --build
 
       - name: Wait for services to be ready
-        run: sleep 10
+        run: sleep 20
 
       - name: Install Node.js and Newman
         uses: actions/setup-node@v4
