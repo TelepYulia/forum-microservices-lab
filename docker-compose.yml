@@ -2,13 +2,13 @@ services:
   user-service:
     build: ./user-service
     ports:
-      - "127.0.0.1:8016:8016"
+      - "8016:8016"
     environment:
       - PYTHONUNBUFFERED=1
 
   forum-service:
     build: ./forum-service
     ports:
-      - "127.0.0.1:9016:9016"
+      - "9016:9016"
     environment:
       - PYTHONUNBUFFERED=1
