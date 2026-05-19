@@ -19,12 +19,13 @@ db_users = {
 @app.middleware("http")
 async def add_student_id_metadata(request: Request, call_next):
     response = await call_next(request)
+    content_type = response.headers.get("content-type", "").lower()
     
-    if response.headers.get("content-type") == "application/json":
-        body = b""
-        async for chunk in response.body_iterator:
-            body += chunk
+    body = b""
+    async for chunk in response.body_iterator:
+        body += chunk
         
+    if "application/json" in content_type:
         try:
             data = json.loads(body.decode("utf-8"))
             if isinstance(data, dict):
@@ -44,14 +45,16 @@ async def add_student_id_metadata(request: Request, call_next):
                 media_type="application/json"
             )
         except Exception:
-            return Response(
-                content=body,
-                status_code=response.status_code,
-                headers=dict(response.headers),
-                media_type="application/json"
-            )
-            
-    return response
+            pass
+
+    new_headers = dict(response.headers)
+    new_headers["content-length"] = str(len(body))
+    return Response(
+        content=body,
+        status_code=response.status_code,
+        headers=new_headers,
+        media_type=content_type
+    )
 
 @app.post("/api/v1/users/register")
 async def register_user(username: str):
