@@ -1,20 +1,18 @@
 version: '3.8'
 
 services:
-  user-service-16:
+  user-service:
     build: ./user-service
-    container_name: user-service-16
     ports:
       - "8016:8016"
+    command: uvicorn main:app --host 0.0.0.0 --port 8016
     environment:
-      - STUDENT_N=16
-      - PORT=8016
+      - PYTHONUNBUFFERED=1
 
-  forum-service-16:
+  forum-service:
     build: ./forum-service
-    container_name: forum-service-16
     ports:
       - "9016:9016"
+    command: uvicorn main:app --host 0.0.0.0 --port 9016
     environment:
-      - STUDENT_N=16
-      - PORT=9016
+      - PYTHONUNBUFFERED=1
