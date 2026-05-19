@@ -20,6 +20,9 @@ jobs:
       - name: Wait for containers to boot up
         run: sleep 35
 
+      - name: Show Container Logs (🔍 CHECK FOR PY ERRORS HERE)
+        run: docker compose logs
+
       - name: Install Node.js
         uses: actions/setup-node@v4
         with:
